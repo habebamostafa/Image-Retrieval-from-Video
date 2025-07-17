@@ -6,6 +6,7 @@ from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 import torchvision.transforms as T
 import io
+import cv2
 
 # Load CLIP model and processor once
 @st.cache_resource
@@ -20,7 +21,7 @@ model.to(device)
 
 def extract_frames(video_bytes, interval_sec=1):
     import tempfile
-    import cv2
+    
 
     temp_file = tempfile.NamedTemporaryFile(suffix=".mp4", delete=False)
     temp_file.write(video_bytes)
