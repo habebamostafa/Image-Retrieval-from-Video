@@ -1,5 +1,4 @@
 import streamlit as st
-from moviepy.editor import VideoFileClip
 from PIL import Image
 import torch
 import numpy as np
