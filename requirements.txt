@@ -1,5 +1,4 @@
 transformers
-torch
+torchvision
 moviepy
 Pillow
-opencv-python
