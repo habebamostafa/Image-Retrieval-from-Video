@@ -1,7 +1,6 @@
 streamlit
 transformers
 torchvision
-opencv-python
 opencv-python-headless
 opencv-contrib-python
 Pillow
