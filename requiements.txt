@@ -1,4 +1,0 @@
-transformers
-torchvision
-moviepy
-Pillow

@@ -1,0 +1,5 @@
+transformers
+torch
+moviepy
+Pillow
+opencv-python

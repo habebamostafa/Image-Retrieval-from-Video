@@ -1,6 +1,5 @@
 import streamlit as st
-from moviepy.editor import VideoFileClip
-from PIL import Image
+import cv2
 import torch
 import numpy as np
 from PIL import Image
@@ -19,15 +18,13 @@ model, processor = load_model()
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model.to(device)
 
-def extract_frames(video_path, interval_sec=1):
-    clip = VideoFileClip(video_path)
-    frames = []
-    duration = int(clip.duration)
-    for t in range(0, duration, interval_sec):
-        frame = clip.get_frame(t)  # numpy array, RGB format
-        img = Image.fromarray(frame)
-        frames.append(img)
-    return frames
+def extract_frames(video_bytes, interval_sec=1):
+    # Open video from bytes
+    video = cv2.VideoCapture()
+    video.open(io.BytesIO(video_bytes))
+    # If the above doesn't work, save file locally and reopen with cv2.VideoCapture(filepath)
+    # Because cv2.VideoCapture usually requires filename, not bytes.
+    # So let's save to temp file instead:
 
 def save_temp_video_and_extract_frames(video_bytes, interval_sec=1):
     import tempfile
