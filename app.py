@@ -19,15 +19,32 @@ model, processor = load_model()
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model.to(device)
 
-def extract_frames(video_path, interval_sec=1):
-    clip = VideoFileClip(video_path)
+def extract_frames(video_bytes, interval_sec=1):
+    import tempfile
+    import cv2
+
+    temp_file = tempfile.NamedTemporaryFile(suffix=".mp4", delete=False)
+    temp_file.write(video_bytes)
+    temp_file.flush()
+
+    cap = cv2.VideoCapture(temp_file.name)
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    interval_frames = int(fps * interval_sec)
+
     frames = []
-    duration = int(clip.duration)
-    for t in range(0, duration, interval_sec):
-        frame = clip.get_frame(t)  # numpy array, RGB format
-        img = Image.fromarray(frame)
-        frames.append(img)
+    count = 0
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        if count % interval_frames == 0:
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frames.append(Image.fromarray(frame_rgb))
+        count += 1
+    cap.release()
     return frames
+
 
 def save_temp_video_and_extract_frames(video_bytes, interval_sec=1):
     import tempfile

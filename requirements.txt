@@ -1,4 +1,6 @@
 transformers
 torchvision
-moviepy
+opencv-python
+opencv-python-headless
+opencv-contrib-python
 Pillow
